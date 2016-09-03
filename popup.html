@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ReadingCloud</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="popup.css">
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap/bootstrap.min.js"></script>
+    <script src="common.js"></script>
+    <script src="popup.js"></script>
+</head>
+
+<body>
+    <div class="rc-container">
+        <div class="msg-list">
+        </div>
+        <div class="rc-bottom">
+            <div class="send">
+                <div class="btn-group dropup" id="btn-group">
+                    <button type="button" id="btn-send" class="btn btn-default" title="Save current tab"></button>
+                    <button type="button" id="btn-drop" class="btn btn-default dropdown-toggle" title="All tabs" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu pull-right rc">
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="rc-input">
+                <textarea id="txtinput" tabindex="1" placeholder="Input something, press Enter to save"></textarea>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

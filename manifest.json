@@ -1,0 +1,31 @@
+{
+    "manifest_version": 2,
+
+    "name": "ReadingCloud",
+    "description": "Save messages and links, visit anywhere.",
+    "version": "1.2.0",
+    "homepage_url": "http://www.abelliu.com/readingcloud",
+
+    "browser_action": {
+        "default_icon": "icon16.png",
+        "default_popup": "popup.html",
+        "default_title": "ReadingCloud"
+    },
+    "options_page": "options.html",
+    
+    "background": { "scripts": [ "jquery.min.js", "background.js" ] },
+
+    "permissions": [
+        "bookmarks",
+        "activeTab",
+        "http://*/*",
+        "https://*/*",
+        "tabs"
+    ],
+
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    }
+}

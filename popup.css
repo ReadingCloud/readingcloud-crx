@@ -1,0 +1,142 @@
+﻿* {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    width: 400px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    color: #232a2a;
+    line-height: 18px;
+}
+
+.rc-container {
+    height: 500px;
+}
+
+.del {
+    cursor: pointer;
+    display: none;
+    color: #95a5a6;
+}
+
+.del:hover {
+    text-decoration: initial;
+}
+
+.msg-list {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 450px;
+    width: 100%;
+}
+
+.msg-list .rc-row {
+    min-height: 60px;
+    overflow: hidden;
+}
+
+.msg-list .rc-row:hover .del {
+    display: initial;
+}
+
+.msg-list .rc-row p {
+    background-color: rgb(236, 240, 240);
+    float: left;
+    max-width: 85%;
+    border-radius: 2px;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 5px 10px 10px 10px;
+    padding: 10px;
+}
+
+.msg-list .rc-row a {
+    color: #232a2a;
+}
+
+.msg-list .time {
+    text-align: center;
+    font-size: 11px;
+    color: #5c6868;
+}
+
+.rc-bottom {
+    border-top: 1px silver solid;
+}
+
+.rc-input {
+    padding-left: 10px;
+    margin-right: 70px;
+}
+
+.rc-input textarea {
+    display: block;
+    width: 100%;
+    resize: none;
+    border: 0;
+    color: #232a2a;
+    font-size: 14px;
+    outline: none;
+    height: 40px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.send {
+    float: right;
+    display: table;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.dropdown-menu.rc {
+    max-width: 350px;
+    max-height: 420px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: 12px;
+}
+
+.dropdown-menu.rc img {
+    height: 15px;
+    width: 15px;
+    margin-left: -16px;
+    margin-right: 5px;
+}
+
+#btn-group:hover .btn {
+    border: 1px solid #adadad;
+}
+
+#btn-send {
+    border: 1px solid transparent;
+    height: 30px;
+    width: 24px;
+    background-image: url(images/send.png);
+    background-position: center;
+    background-size: 30px 24px;
+    background-repeat: no-repeat;
+}
+
+#btn-drop {
+    border: 1px solid transparent;
+    height: 30px;
+    padding-right: 4px;
+    padding-left: 4px;
+}
+
+.operate-area {
+    text-align: right;
+}
+
+.operate-area .btn {
+    padding: 0px 1px;
+    margin-right: 2px;
+    min-width: 35px;
+}
