@@ -52,7 +52,7 @@ function initCurrentTab() {
             return;
         }
 
-        $("#btn-send").attr("title", "Click to Send\r\n" + tab.url);
+        $("#btn-send").attr("title", "Click to send\r\n" + tab.url);
 
         $("#btn-send").click(function() {
             var data = {
@@ -144,7 +144,7 @@ function loadMsg() {
     AuthPost(getBaseUrl() + "/api/Msg/GetMsgList", data, function(result) {
         if (result.Result == 1) {
             for (i = 0; i < result.ListCount; i++) {
-                addListItem(result.MsgList[i].DataGuid, result.MsgList[i].Content, result.MsgList[i].ContentType, new Date(result.MsgList[i].AddTimeUTC).toLocaleString(), result.MsgList[i].GroupId);
+                addListItem(result.MsgList[i]);
             }
         }
     });
@@ -152,26 +152,26 @@ function loadMsg() {
 
 var currentGroupId = '';
 
-function addListItem(guid, content, type, localtime, groupid) {
-    var a = content;
+function addListItem(item) {
+    var a = item.Content;
 
-    if (type == 1) {
-        a = content;
-    } else if (type == 2) {
-        a = '<a href="' + content + '" target="_blank">' + content + '</a>';
+    if (item.ContentType == 1) {
+        a = item.Content;
+    } else if (item.ContentType == 2) {
+        a = '<a href="' + item.Content + '" target="_blank">' + item.Content + '</a>';
     }
 
     var timehtml = '';
-    if (groupid == '' || currentGroupId != groupid) {
-        timehtml = '<div class="time">' + localtime + '</div>';
-        currentGroupId = groupid;
+    if (item.GroupId == '' || currentGroupId != item.GroupId) {
+        timehtml = '<div class="time">' + new Date(item.AddTimeUTC).toLocaleString() + '</div>';
+        currentGroupId = item.GroupId;
     }
 
-    var c = timehtml + '<div class="rc-row"><p>' + a + '</p> <a id="a' + guid + '" class="del" >x</a> </div>';
+    var c = timehtml + '<div class="rc-row"><p>' + a + '</p> <a id="a' + item.DataGuid + '" class="del" >x</a> </div>';
 
     $('.msg-list').append(c);
 
-    bindDel(guid);
+    bindDel(item.DataGuid);
 
     $('.msg-list').scrollTop($('.msg-list')[0].scrollHeight);
 }
