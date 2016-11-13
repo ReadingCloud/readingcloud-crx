@@ -111,7 +111,7 @@ function initTabs() {
 
             $(".dropdown-menu li.lisel" + sbtn.attr("selidx")).each(function() {
                 var item = {
-                    "msg_content": $(this).attr("title"),
+                    "msg_content": $(this).attr("title"), //url
                     "icon": $(this).attr("fav"),
                     "title": $(this).attr("pagetitle"),
                     "type": "2",
@@ -121,12 +121,9 @@ function initTabs() {
 
             AuthPost(getBaseUrl() + "/api/Msg/AddGroup", data, function(result) {
                 if (result.Result == 1) {
-                    for (i = 0; i < data.List.length; i++) {
-                        addListItem(result.guids[i], data.List[i].msg_content, data.List[i].type, new Date().toLocaleString(), result.groupid);
-                    }
+                    addGroup(result.data.GroupId, result.data.GroupTitle, new Date(result.data.UTCTime).toLocaleString(), result.data.Items);
 
                     sbtn[0].innerHTML = "Saved"
-
                 } else {
                     //show error
                 }
@@ -138,42 +135,74 @@ function initTabs() {
 }
 
 function loadMsg() {
-
     var data = { "UserToken": getToken() }
 
-    AuthPost(getBaseUrl() + "/api/Msg/GetMsgList", data, function(result) {
+    AuthPost(getBaseUrl() + "/api/Msg/GetMsgListWithGroup", data, function(result) {
         if (result.Result == 1) {
             for (i = 0; i < result.ListCount; i++) {
-                addListItem(result.MsgList[i].DataGuid, result.MsgList[i].Content, result.MsgList[i].ContentType, new Date(result.MsgList[i].AddTimeUTC).toLocaleString(), result.MsgList[i].GroupId);
+                if (result.List[i].IsGroup == 0) {
+                    var item = result.List[i].Items[0];
+                    addListItem(item.DataGuid, item.Content, item.ContentType, item.Comment, new Date(item.AddTimeUTC).toLocaleString());
+                } else {
+                    addGroup(result.List[i].GroupId, result.List[i].GroupTitle, new Date(result.List[i].UTCTime).toLocaleString(), result.List[i].Items);
+                }
             }
         }
     });
+
 }
 
-var currentGroupId = '';
-
-function addListItem(guid, content, type, localtime, groupid) {
-    var a = content;
+function addListItem(guid, content, type, comment, localtime) {
+    var contentStr = content;
 
     if (type == 1) {
-        a = content;
+        contentStr = content;
     } else if (type == 2) {
-        a = '<a href="' + content + '" target="_blank">' + content + '</a>';
+        contentStr = '<a href="' + content + '" target="_blank">' + content + '</a>';
     }
 
-    var timehtml = '';
-    if (groupid == '' || currentGroupId != groupid) {
-        timehtml = '<div class="time">' + localtime + '</div>';
-        currentGroupId = groupid;
-    }
+    var timehtml = '<div class="time">' + localtime + '</div>';
 
-    var c = timehtml + '<div class="rc-row"><p>' + a + '</p> <a id="a' + guid + '" class="del" >x</a> </div>';
+    var c = timehtml + '<div class="rc-row"><p>' + contentStr + '</p> <a id="a' + guid + '" class="del" title="Delete">x</a> </div>';
 
     $('.msg-list').append(c);
 
     bindDel(guid);
 
     $('.msg-list').scrollTop($('.msg-list')[0].scrollHeight);
+}
+
+var groupLinks = [];
+
+function addGroup(group_guid, group_title, localtime, items) {
+    var timehtml = '<div class="time">' + localtime + '</div>'; // + group_title
+    var contentStr = "";
+    var linksarr = [];
+
+    $.each(items, function(idx, data) {
+        //bind del item
+        contentStr += '<a href="' + data.Content + '" target="_blank" title="' + data.Comment + '\r\n' + data.Content + '" > <img src="' + data.Icon + '" /> </a>';
+        linksarr.push(data.Content);
+    });
+
+    groupLinks[group_guid] = linksarr;
+
+    var c = timehtml + '<div class="rc-row rc-group"><p>' + contentStr + '</p> <div class="righttool"><a id="a' + group_guid + '" class="del" title="Delete all" >x</a> <a id="o' + group_guid + '" title="Open all" class="del opentab" ><span>+</span></a></div> </div>';
+    $('.msg-list').append(c);
+
+    bindDelGroup(group_guid);
+    bindOpenGroup(group_guid);
+
+    $('.msg-list').scrollTop($('.msg-list')[0].scrollHeight);
+}
+
+function openTabs(urls) {
+    for (i = 0; i < urls.length; i++) {
+        chrome.tabs.create({
+            url: urls[i],
+            selected: false
+        }, function(tab) {});
+    }
 }
 
 function bindDel(guid) {
@@ -195,5 +224,29 @@ function bindDel(guid) {
                 //show error
             }
         });
+    });
+}
+
+function bindDelGroup(group_guid) {
+    $("#a" + group_guid).click(function() {
+        var data = {
+            "guid": group_guid,
+            "UserToken": getToken()
+        }
+
+        AuthPost(getBaseUrl() + "/api/Msg/DelGroup", data, function(result) {
+            if (result.Result == 1) {
+                var row = $("#a" + group_guid).parent().parent();
+                row.prev().remove();
+                row.remove();
+            }
+        });
+    });
+}
+
+function bindOpenGroup(group_guid) {
+    $("#o" + group_guid).click(function() {
+        var links = groupLinks[group_guid];
+        openTabs(links);
     });
 }

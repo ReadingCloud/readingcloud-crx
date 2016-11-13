@@ -18,6 +18,21 @@ body {
     height: 500px;
 }
 
+.righttool {
+    float: left;
+    margin-top: -3px;
+}
+
+.opentab {
+    position: relative;
+    top: 20px;
+    left: -11px;
+}
+
+.opentab span {
+    font-weight: bold;
+}
+
 .del {
     cursor: pointer;
     display: none;
@@ -47,7 +62,7 @@ body {
 .msg-list .rc-row p {
     background-color: rgb(236, 240, 240);
     float: left;
-    max-width: 85%;
+    max-width: 84%;
     border-radius: 2px;
     overflow: hidden;
     white-space: pre-wrap;
@@ -58,6 +73,20 @@ body {
 
 .msg-list .rc-row a {
     color: #232a2a;
+}
+
+.msg-list .rc-group p a {
+    float: left;
+    margin-bottom: 2px;
+}
+
+.msg-list .rc-group p a:hover {
+    text-decoration: none;
+}
+
+.msg-list .rc-group p a img {
+    width: 20px;
+    height: 20px;
 }
 
 .msg-list .time {
