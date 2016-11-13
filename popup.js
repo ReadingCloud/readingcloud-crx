@@ -28,7 +28,7 @@
 
                 AuthPost(getBaseUrl() + "/api/Msg/AddMsg", data, function(result) {
                     if (result.Result == 1) {
-                        addListItem(result.ResultMessage, val, type, new Date().toLocaleString());
+                        addListItem(result.ResultMessage, val, type, "", new Date().toLocaleString());
                     } else {
                         //show error
                     }
@@ -57,6 +57,7 @@ function initCurrentTab() {
         $("#btn-send").click(function() {
             var data = {
                 "msg_content": tab.url,
+                "comment": tab.title,
                 "icon": "",
                 "type": "2",
                 "UserToken": getToken()
@@ -64,7 +65,7 @@ function initCurrentTab() {
 
             AuthPost(getBaseUrl() + "/api/Msg/AddMsg", data, function(result) {
                 if (result.Result == 1) {
-                    addListItem(result.ResultMessage, tab.url, 2, new Date().toLocaleString());
+                    addListItem(result.ResultMessage, tab.url, 2, "", new Date().toLocaleString());
                 }
             });
 
