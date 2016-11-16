@@ -65,7 +65,7 @@ function initCurrentTab() {
 
             AuthPost(getBaseUrl() + "/api/Msg/AddMsg", data, function(result) {
                 if (result.Result == 1) {
-                    addListItem(result.ResultMessage, tab.url, 2, "", new Date().toLocaleString());
+                    addListItem(result.ResultMessage, tab.url, 2, tab.title, new Date().toLocaleString());
                 }
             });
 
@@ -107,6 +107,7 @@ function initTabs() {
 
             var data = {
                 "UserToken": getToken(),
+                "group_title": new Date().toLocaleString(),
                 "List": []
             }
 
@@ -159,7 +160,7 @@ function addListItem(guid, content, type, comment, localtime) {
     if (type == 1) {
         contentStr = content;
     } else if (type == 2) {
-        contentStr = '<a href="' + content + '" target="_blank">' + content + '</a>';
+        contentStr = '<a id="op' + guid + '" href="####" title="' + comment + '" >' + content + '</a>';
     }
 
     var timehtml = '<div class="time">' + localtime + '</div>';
@@ -167,6 +168,13 @@ function addListItem(guid, content, type, comment, localtime) {
     var c = timehtml + '<div class="rc-row"><p>' + contentStr + '</p> <a id="a' + guid + '" class="del" title="Delete">x</a> </div>';
 
     $('.msg-list').append(c);
+
+
+    $("#op" + guid).click(function() {
+        var tmp = [];
+        tmp.push(content);
+        openTabs(tmp);
+    });
 
     bindDel(guid);
 
@@ -176,7 +184,7 @@ function addListItem(guid, content, type, comment, localtime) {
 var groupLinks = [];
 
 function addGroup(group_guid, group_title, localtime, items) {
-    var timehtml = '<div class="time">' + localtime + '</div>'; // + group_title
+    var timehtml = '<div class="time"> <div>' + (group_title == '' ? localtime : group_title) + '</div> </div>';
     var contentStr = "";
     var linksarr = [];
 
