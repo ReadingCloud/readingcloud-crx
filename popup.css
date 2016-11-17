@@ -92,12 +92,12 @@ body {
 .msg-list .time {
     text-align: center;
     font-size: 11px;
-    color: #5c6868;
 }
 
 .msg-list .time input {
     width: 300px;
     text-align: center;
+    line-height: initial;
 }
 
 .msg-list .time div {
