@@ -16,6 +16,7 @@ function setToken(token) {
 
 function getBaseUrl() {
     return localStorage["readingclouddomain"];
+    //return "http://localhost:51911";
 }
 
 function AuthPost(url, data, callback) {

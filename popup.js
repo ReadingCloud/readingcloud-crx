@@ -1,5 +1,4 @@
 ﻿$(function() {
-
     $(".dropdown-menu").click(function() {
         return false;
     });
@@ -137,9 +136,13 @@ function initTabs() {
 }
 
 function loadMsg() {
+    $('.msg-list').html("<div style='text-align:center;margin:0 auto; margin-top:150px;'>Loading...</div>");
+
     var data = { "UserToken": getToken() }
 
     AuthPost(getBaseUrl() + "/api/Msg/GetMsgListWithGroup", data, function(result) {
+        $('.msg-list').html("");
+
         if (result.Result == 1) {
             for (i = 0; i < result.ListCount; i++) {
                 if (result.List[i].IsGroup == 0) {
@@ -184,13 +187,14 @@ function addListItem(guid, content, type, comment, localtime) {
 var groupLinks = [];
 
 function addGroup(group_guid, group_title, localtime, items) {
-    var timehtml = '<div class="time"> <div>' + (group_title == '' ? localtime : group_title) + '</div> </div>';
+    var groupTitle = group_title == '' ? localtime : group_title;
+    var timehtml = '<div class="time"> <div id="divtitle' + group_guid + '">' + groupTitle + '</div> </div>';
     var contentStr = "";
     var linksarr = [];
 
     $.each(items, function(idx, data) {
-        //bind del item
-        contentStr += '<a href="' + data.Content + '" target="_blank" title="' + data.Comment + '\r\n' + data.Content + '" > <img src="' + data.Icon + '" /> </a>';
+        //todo bind del item
+        contentStr += '<a url="' + data.Content + '" href="####" class="groupitem" title="' + data.Comment + '\r\n' + data.Content + '" > <img src="' + data.Icon + '" /> </a>';
         linksarr.push(data.Content);
     });
 
@@ -199,10 +203,67 @@ function addGroup(group_guid, group_title, localtime, items) {
     var c = timehtml + '<div class="rc-row rc-group"><p>' + contentStr + '</p> <div class="righttool"><a id="a' + group_guid + '" class="del" title="Delete all" >x</a> <a id="o' + group_guid + '" title="Open all" class="del opentab" ><span>+</span></a></div> </div>';
     $('.msg-list').append(c);
 
+    //bind every icon click
+    $(".groupitem").click(function() {
+        var url = $(this).attr("url");
+        var tmp = [];
+        tmp.push(url);
+        openTabs(tmp);
+    });
+
+
     bindDelGroup(group_guid);
-    bindOpenGroup(group_guid);
+
+    //open all urls
+    $("#o" + group_guid).click(function() {
+        var links = groupLinks[group_guid];
+        openTabs(links);
+    });
+
+    //edit title
+    $("#divtitle" + group_guid).click(function() {
+        var inputstr = '<input type="text" id="txttitle' + group_guid + '" value="' + $(this).html() + '" />';
+        $(this).after(inputstr);
+
+        var _div = $(this);
+        var _txt = $("#txttitle" + group_guid);
+
+        _txt.blur(function() {
+            renameGroupTitle(_div, _txt);
+        });
+
+        _txt.keydown(function(e) {
+            if (e.keyCode == 13) {
+                renameGroupTitle(_div, _txt);
+            }
+        });
+
+        $(this).hide();
+        _txt.focus();
+    });
 
     $('.msg-list').scrollTop($('.msg-list')[0].scrollHeight);
+}
+
+function renameGroupTitle(_div, _txt) {
+    var oldvalue = _div.html();
+    var newvalue = _txt.val();
+
+    if (newvalue != oldvalue) {
+        var data = {
+            "group_guid": _txt.attr("id").replace("txttitle", ""),
+            "new_title": newvalue,
+            "UserToken": getToken()
+        }
+
+        AuthPost(getBaseUrl() + "/api/Msg/RenameGroupTitle", data, function(result) {
+            if (result.Result == 1) {} else {}
+        });
+    }
+
+    _div.html(newvalue);
+    _txt.remove();
+    _div.show();
 }
 
 function openTabs(urls) {
@@ -250,12 +311,5 @@ function bindDelGroup(group_guid) {
                 row.remove();
             }
         });
-    });
-}
-
-function bindOpenGroup(group_guid) {
-    $("#o" + group_guid).click(function() {
-        var links = groupLinks[group_guid];
-        openTabs(links);
     });
 }
