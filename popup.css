@@ -94,16 +94,16 @@ body {
     font-size: 11px;
 }
 
-.msg-list .time input {
-    width: 300px;
-    text-align: center;
+.msg-list .grouptitle {
+    font-size: 11px;
+    padding: 0 10px;
+}
+
+.msg-list .grouptitle input {
+    width: 150px;
     line-height: initial;
 }
 
-.msg-list .time div {
-    width: 300px;
-    margin: 0 auto;
-}
 .rc-bottom {
     border-top: 1px silver solid;
 }

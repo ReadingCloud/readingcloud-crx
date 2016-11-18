@@ -188,7 +188,7 @@ var groupLinks = [];
 
 function addGroup(group_guid, group_title, localtime, items) {
     var groupTitle = group_title == '' ? localtime : group_title;
-    var timehtml = '<div class="time"> <div id="divtitle' + group_guid + '">' + groupTitle + '</div> </div>';
+    var timehtml = '<div class="grouptitle"> <div id="divtitle' + group_guid + '">' + groupTitle + '</div> </div>';
     var contentStr = "";
     var linksarr = [];
 
@@ -235,11 +235,15 @@ function addGroup(group_guid, group_title, localtime, items) {
         _txt.keydown(function(e) {
             if (e.keyCode == 13) {
                 renameGroupTitle(_div, _txt);
+            } else if (e.keyCode == 27) { //esc
+                _txt.remove();
+                _div.show();
             }
         });
 
         $(this).hide();
         _txt.focus();
+        _txt.select();
     });
 
     $('.msg-list').scrollTop($('.msg-list')[0].scrollHeight);
