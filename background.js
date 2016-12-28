@@ -1,23 +1,23 @@
-﻿$(function () {
-    CacheDomain();
-});
+﻿// $(function () {
+//     CacheDomain();
+// });
 
-function CacheDomain() {
+// function CacheDomain() {
 
-    $.ajax({
-        async: false,
-        type: "GET",
-        url: "https://api.github.com/repos/Abel-Liu/svc-res/readme",
-        dataType: 'json',
-        success: function (result) {
-            if (result != null) {
-                localStorage["readingclouddomain"] = base64_decode(result.content);
-            }
-        }
-    });
+//     $.ajax({
+//         async: false,
+//         type: "GET",
+//         url: "https://api.github.com/repos/Abel-Liu/svc-res/readme",
+//         dataType: 'json',
+//         success: function (result) {
+//             if (result != null) {
+//                 localStorage["readingclouddomain"] = base64_decode(result.content);
+//             }
+//         }
+//     });
 
-    setTimeout(CacheDomain, 5000);
-}
+//     setTimeout(CacheDomain, 5000);
+// }
 
 function base64_decode(str) {
     var c1, c2, c3, c4;

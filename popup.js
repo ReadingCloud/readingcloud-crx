@@ -152,6 +152,15 @@ function loadMsg() {
                     addGroup(result.List[i].GroupId, result.List[i].GroupTitle, new Date(result.List[i].UTCTime).toLocaleString(), result.List[i].Items);
                 }
             }
+
+            //bind every icon click
+            $(".groupitem").click(function() {
+                var url = $(this).attr("url");
+                var tmp = [];
+                tmp.push(url);
+                openTabs(tmp);
+            });
+
         }
     });
 
@@ -202,15 +211,6 @@ function addGroup(group_guid, group_title, localtime, items) {
 
     var c = timehtml + '<div class="rc-row rc-group"><p>' + contentStr + '</p> <div class="righttool"><a id="a' + group_guid + '" class="del" title="Delete all" >x</a> <a id="o' + group_guid + '" title="Open all" class="del opentab" ><span>+</span></a></div> </div>';
     $('.msg-list').append(c);
-
-    //bind every icon click
-    $(".groupitem").click(function() {
-        var url = $(this).attr("url");
-        var tmp = [];
-        tmp.push(url);
-        openTabs(tmp);
-    });
-
 
     bindDelGroup(group_guid);
 

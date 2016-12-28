@@ -15,8 +15,8 @@ function setToken(token) {
 
 
 function getBaseUrl() {
-    return localStorage["readingclouddomain"];
-    //return "http://localhost:51911";
+    //return localStorage["readingclouddomain"];
+    return "http://guaizi0129-001-site1.itempurl.com";
 }
 
 function AuthPost(url, data, callback) {
