@@ -25,7 +25,7 @@
                     "UserToken": getToken()
                 }
 
-                AuthPost(getBaseUrl() + "/api/Msg/AddMsg", data, function(result) {
+                AuthPost(getBaseUrl() + "/Msg/AddMsg", data, function(result) {
                     if (result.Result == 1) {
                         addListItem(result.ResultMessage, val, type, "", new Date().toLocaleString());
                     } else {
@@ -62,7 +62,7 @@ function initCurrentTab() {
                 "UserToken": getToken()
             }
 
-            AuthPost(getBaseUrl() + "/api/Msg/AddMsg", data, function(result) {
+            AuthPost(getBaseUrl() + "/Msg/AddMsg", data, function(result) {
                 if (result.Result == 1) {
                     addListItem(result.ResultMessage, tab.url, 2, tab.title, new Date().toLocaleString());
                 }
@@ -120,7 +120,7 @@ function initTabs() {
                 data.List.push(item);
             });
 
-            AuthPost(getBaseUrl() + "/api/Msg/AddGroup", data, function(result) {
+            AuthPost(getBaseUrl() + "/Msg/AddGroup", data, function(result) {
                 if (result.Result == 1) {
                     addGroup(result.data.GroupId, result.data.GroupTitle, new Date(result.data.UTCTime).toLocaleString(), result.data.Items);
 
@@ -140,7 +140,7 @@ function loadMsg() {
 
     var data = { "UserToken": getToken() }
 
-    AuthPost(getBaseUrl() + "/api/Msg/GetMsgListWithGroup", data, function(result) {
+    AuthPost(getBaseUrl() + "/Msg/GetMsgListWithGroup", data, function(result) {
         $('.msg-list').html("");
 
         if (result.Result == 1) {
@@ -260,7 +260,7 @@ function renameGroupTitle(_div, _txt) {
             "UserToken": getToken()
         }
 
-        AuthPost(getBaseUrl() + "/api/Msg/RenameGroupTitle", data, function(result) {
+        AuthPost(getBaseUrl() + "/Msg/RenameGroupTitle", data, function(result) {
             if (result.Result == 1) {} else {}
         });
     }
@@ -286,7 +286,7 @@ function bindDel(guid) {
             "UserToken": getToken()
         }
 
-        AuthPost(getBaseUrl() + "/api/Msg/DelMsg", data, function(result) {
+        AuthPost(getBaseUrl() + "/Msg/DelMsg", data, function(result) {
             if (result.Result == 1) {
                 var prev = $("#a" + guid).parent().prev();
                 var next = $("#a" + guid).parent().next();
@@ -308,7 +308,7 @@ function bindDelGroup(group_guid) {
             "UserToken": getToken()
         }
 
-        AuthPost(getBaseUrl() + "/api/Msg/DelGroup", data, function(result) {
+        AuthPost(getBaseUrl() + "/Msg/DelGroup", data, function(result) {
             if (result.Result == 1) {
                 var row = $("#a" + group_guid).parent().parent();
                 row.prev().remove();

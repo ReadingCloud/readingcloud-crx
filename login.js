@@ -12,7 +12,7 @@
     $("#btnLogin").click(Login);
 
     $("#aregister").click(function() {
-        window.open(getBaseUrl() + "/account/register.shtml");
+        window.open(getBaseUrl() + "/user/register");
     });
 });
 
@@ -30,7 +30,7 @@ function Login() {
 
         $("#btnLogin").attr("disabled", "disabled");
 
-        $.post(getBaseUrl() + "/api/User/Login", data, function(result) {
+        $.post(getBaseUrl() + "/User/CrxLogin", data, function(result) {
             if (result.Result == 1) {
                 setToken(result.ResultMessage);
 
