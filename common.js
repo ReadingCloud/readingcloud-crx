@@ -15,7 +15,7 @@ function setToken(token) {
 
 
 function getBaseUrl() {
-    return "http://localhost:21787";
+    return "http://readingcloud.abelliu.com";
 }
 
 function AuthPost(url, data, callback) {
