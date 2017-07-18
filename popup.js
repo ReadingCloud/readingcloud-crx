@@ -1,4 +1,34 @@
-﻿$(function() {
+﻿var context_options = {
+    items: [
+        { header: '' }, {
+            text: 'Delete item',
+            onclick: function(e) {
+                var data = {
+                    "guid": e.data.itemid,
+                    "UserToken": getToken()
+                }
+
+                AuthPost(getBaseUrl() + "/Msg/DelMsg", data, function(result) {
+                    if (result.Result == 1) {
+                        var idx = groupLinks[e.data.groupid].indexOf(e.data.content);
+                        groupLinks[e.data.groupid].splice(idx, 1);
+
+                        $("#i" + e.data.itemid).remove();
+                        if (groupLinks[e.data.groupid].length == 0) {
+                            var row = $("#a" + e.data.groupid).parent().parent();
+                            row.prev().remove();
+                            row.remove();
+                        }
+                    } else {
+                        //show error
+                    }
+                });
+            }
+        }
+    ]
+}
+
+$(function() {
     $(".dropdown-menu").click(function() {
         return false;
     });
@@ -202,8 +232,7 @@ function addGroup(group_guid, group_title, localtime, items) {
     var linksarr = [];
 
     $.each(items, function(idx, data) {
-        //todo bind del item
-        contentStr += '<a url="' + data.Content + '" href="####" class="groupitem" title="' + data.Comment + '\r\n' + data.Content + '" > <img src="' + data.Icon + '" /> </a>';
+        contentStr += '<a url="' + data.Content + '" href="####" class="groupitem" title="' + data.Comment + '\r\n' + data.Content + '" id="i' + data.DataGuid + '" data-itemid="' + data.DataGuid + '" data-groupid="' + group_guid + '" data-content="' + data.Content + '" > <img src="' + data.Icon + '" /> </a>';
         linksarr.push(data.Content);
     });
 
@@ -211,6 +240,9 @@ function addGroup(group_guid, group_title, localtime, items) {
 
     var c = timehtml + '<div class="rc-row rc-group"><p>' + contentStr + '</p> <div class="righttool"><a id="a' + group_guid + '" class="del" title="Delete all" >x</a> <a id="o' + group_guid + '" title="Open all" class="del opentab" ><span>+</span></a></div> </div>';
     $('.msg-list').append(c);
+
+    //delete one item in group
+    $('.groupitem').contextify(context_options);
 
     bindDelGroup(group_guid);
 
