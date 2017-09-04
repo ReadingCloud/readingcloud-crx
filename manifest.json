@@ -2,8 +2,8 @@
     "manifest_version": 2,
 
     "name": "ReadingCloud",
-    "description": "Save messages and links, visit anywhere.",
-    "version": "1.4.1",
+    "description": "Save messages,tabs and links, visit anywhere.",
+    "version": "1.5.0",
     "homepage_url": "http://www.abelliu.com/readingcloud",
 
     "browser_action": {

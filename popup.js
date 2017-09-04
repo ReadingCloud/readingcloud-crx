@@ -118,20 +118,37 @@ function initTabs() {
                 var favicon = (curTab.favIconUrl != '' && curTab.favIconUrl !== undefined) ? curTab.favIconUrl : 'chrome://favicon/' + curTab.url;
                 var pagetitle = curTab.title.replace(/\"/g, " ");
 
-                wndHtml += '<li class="lisel' + curTab.windowId + '" title="' + curTab.url + '" fav="' + favicon + '" pagetitle="' + pagetitle + '"> <a href="#"><img src="' + favicon + '">' + pagetitle + '</a></li>';
+                wndHtml += '<li class="lisel' + curTab.windowId + '" title="' + curTab.url + '" fav="' + favicon + '" pagetitle="' + pagetitle + '"> <a href="#"> <input type="checkbox"> <img src="' + favicon + '"> <p>' + pagetitle + '</p> </a></li>';
 
             });
 
-            wndHtml += '<li class="operate-area"><button class="btn btn-default btn-sm save-tabs" selidx="' + curWindow.id + '">Save</button></li>';
+            wndHtml += '<li class="operate-area" style="margin-top:5px;"><button class="btn btn-default btn-sm save-tabs" selidx="' + curWindow.id + '">Save</button> ';
+            wndHtml += '<button class="btn btn-default btn-sm sel-all" style="position: absolute;left:5px" selidx="' + curWindow.id + '">Select All</button>';
+            wndHtml += '<button class="btn btn-default btn-sm clear-all" style="position: absolute;left:65px" selidx="' + curWindow.id + '">Clear</button> </li>';
 
             allHtml += wndHtml;
         });
 
         $(".dropdown-menu").append(allHtml);
 
+        $(".dropdown-menu>li>a").click(function() {
+            var ck = $(this).find("input[type='checkbox']");
+            ck[0].checked = !ck[0].checked;
+        });
+
+        $(".sel-all").click(function() {
+            $(".dropdown-menu li.lisel" + $(this).attr("selidx")).each(function() {
+                $(this).find("input[type='checkbox']")[0].checked = true;
+            });
+        });
+        $(".clear-all").click(function() {
+            $(".dropdown-menu li.lisel" + $(this).attr("selidx")).each(function() {
+                $(this).find("input[type='checkbox']")[0].checked = false;
+            });
+        });
+
         $(".save-tabs").click(function() {
             var sbtn = $(this);
-            sbtn[0].innerHTML = "Saving"
             sbtn.attr("disabled", "disabled");
 
             var data = {
@@ -141,20 +158,35 @@ function initTabs() {
             }
 
             $(".dropdown-menu li.lisel" + sbtn.attr("selidx")).each(function() {
-                var item = {
-                    "msg_content": $(this).attr("title"), //url
-                    "icon": $(this).attr("fav"),
-                    "title": $(this).attr("pagetitle"),
-                    "type": "2",
+                var ck = $(this).find("input[type='checkbox']");
+                if (ck[0].checked) {
+                    var item = {
+                        "msg_content": $(this).attr("title"), //url
+                        "icon": $(this).attr("fav"),
+                        "title": $(this).attr("pagetitle"),
+                        "type": "2",
+                    }
+                    data.List.push(item);
                 }
-                data.List.push(item);
             });
+
+            if (data.List.length == 0) {
+                sbtn.removeAttr("disabled");
+                return false;
+            } else {
+                sbtn[0].innerHTML = "Saving";
+            }
 
             AuthPost(getBaseUrl() + "/Msg/AddGroup", data, function(result) {
                 if (result.Result == 1) {
                     addGroup(result.data.GroupId, result.data.GroupTitle, new Date(result.data.UTCTime).toLocaleString(), result.data.Items);
 
-                    sbtn[0].innerHTML = "Saved"
+                    sbtn[0].innerHTML = "Saved!";
+
+                    setTimeout(function() {
+                        sbtn.removeAttr("disabled");
+                        sbtn[0].innerHTML = "Save";
+                    }, 1000);
                 } else {
                     //show error
                 }
