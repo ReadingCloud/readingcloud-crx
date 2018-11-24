@@ -15,7 +15,7 @@ function setToken(token) {
 
 
 function getBaseUrl() {
-    return "http://readingcloud.abelliu.com";
+    return "http://readingcloud.abelcloud.net";
 }
 
 function AuthPost(url, data, callback) {
