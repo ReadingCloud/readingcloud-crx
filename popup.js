@@ -206,23 +206,26 @@ function loadMsg() {
         $('.msg-list').html("");
 
         if (result.Result == 1) {
-            for (i = 0; i < result.ListCount; i++) {
-                if (result.List[i].IsGroup == 0) {
-                    var item = result.List[i].Items[0];
-                    addListItem(item.DataGuid, item.Content, item.ContentType, item.Comment, new Date(item.AddTimeUTC).toLocaleString());
-                } else {
-                    addGroup(result.List[i].GroupId, result.List[i].GroupTitle, new Date(result.List[i].UTCTime).toLocaleString(), result.List[i].Items);
+            if(result.ListCount == 0) {
+                $('.msg-list').html("<div style='text-align: center;  margin-top: 50%;  color: #707070;'>Save content by input or select your tabs</div>");
+            } else {
+                for (i = 0; i < result.ListCount; i++) {
+                    if (result.List[i].IsGroup == 0) {
+                        var item = result.List[i].Items[0];
+                        addListItem(item.DataGuid, item.Content, item.ContentType, item.Comment, new Date(item.AddTimeUTC).toLocaleString());
+                    } else {
+                        addGroup(result.List[i].GroupId, result.List[i].GroupTitle, new Date(result.List[i].UTCTime).toLocaleString(), result.List[i].Items);
+                    }
                 }
+
+                //bind every icon click
+                $(".groupitem").click(function() {
+                    var url = $(this).attr("url");
+                    var tmp = [];
+                    tmp.push(url);
+                    openTabs(tmp);
+                });
             }
-
-            //bind every icon click
-            $(".groupitem").click(function() {
-                var url = $(this).attr("url");
-                var tmp = [];
-                tmp.push(url);
-                openTabs(tmp);
-            });
-
         }
     });
 
