@@ -15,7 +15,7 @@ function setToken(token) {
 
 
 function getBaseUrl() {
-    return "http://readingcloud.abelcloud.net";
+    return "http://readingcloud.azurewebsites.net";
 }
 
 function AuthPost(url, data, callback) {
