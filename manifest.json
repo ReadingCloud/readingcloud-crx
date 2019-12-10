@@ -3,7 +3,7 @@
 
     "name": "ReadingCloud",
     "description": "Save messages,tabs and links, visit anywhere.",
-    "version": "1.5.4",
+    "version": "1.5.5",
     "homepage_url": "http://readingcloud.abelcloud.net",
 
     "browser_action": {

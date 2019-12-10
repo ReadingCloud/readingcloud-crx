@@ -70,7 +70,14 @@ $(function() {
         }
     });
 
+    setTimeout(loadFav, 1000);
 });
+
+function loadFav(){
+    $(".dropdown-menu li").each(function() {
+        $(this).find("img").attr('src', $(this).attr('fav'));
+    });
+}
 
 function initCurrentTab() {
     chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
@@ -118,7 +125,7 @@ function initTabs() {
                 var favicon = (curTab.favIconUrl != '' && curTab.favIconUrl !== undefined) ? curTab.favIconUrl : 'chrome://favicon/' + curTab.url;
                 var pagetitle = curTab.title.replace(/\"/g, " ");
 
-                wndHtml += '<li class="lisel' + curTab.windowId + '" title="' + curTab.url + '" fav="' + favicon + '" pagetitle="' + pagetitle + '"> <a href="#"> <input type="checkbox"> <img src="' + favicon + '"> <p>' + pagetitle + '</p> </a></li>';
+                wndHtml += '<li class="lisel' + curTab.windowId + '" title="' + curTab.url + '" fav="' + favicon + '" pagetitle="' + pagetitle + '"> <a href="#"> <input type="checkbox"> <img src=""> <p>' + pagetitle + '</p> </a></li>';
 
             });
 
