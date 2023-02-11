@@ -15,7 +15,10 @@ function setToken(token) {
 
 
 function getBaseUrl() {
-    return "http://readingcloud.azurewebsites.net";
+    if (localStorage["baseurl"] == null || localStorage["baseurl"] == "")
+        return "http://readingcloud.azurewebsites.net";
+    else
+        return localStorage["baseurl"];
 }
 
 function AuthPost(url, data, callback) {
